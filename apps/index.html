@@ -23,7 +23,9 @@
 	    </form>
     </div>
     <script type="module">
-	import '../directive/focus.directive.js'; // 사용자 정의 지시자 불러옴
+	import '../directive/focus.directive.js';       // 사용자 정의 지시자 불러옴
+	import '../filters/datetime.filter.js';         // 필터 객체 불러오기
+	import '../mixins/lifecycle-logger.mixin.js';   // 믹스인 객체 불러오기
 	import MessageList from '../components/MessageList.js';
 	
     let viewModel = new Vue({
