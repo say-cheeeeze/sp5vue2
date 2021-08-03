@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Application</title>
+	<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+	    
+	    <message-list :items="msgList" @delete="deleteMessage"></message-list>
+	    
+	    <form v-on:submit.prevent="addMessage">
+		    <textarea style="width:300px; height:80px;" v-model="newMessage" placeholder="내용을 입력해주세요.">
+		    </textarea>
+		    <br/>
+		    <span>글자 수 : {{ newMessage.length }}</span>
+		    <div>
+			    <button :disabled="addDisabled" type="submit">새 글 등록</button>
+		    </div>
+	    </form>
+    </div>
+    <script type="module">
+	import '../directive/focus.directive.js'; // 사용자 정의 지시자 불러옴
+	import MessageList from '../components/MessageList.js';
+	
+    let viewModel = new Vue({
+	    el : '#app',
+	    components : {
+	    	// Vue.js 는 프로퍼티 이름을 PascalCase에서 kebab-case 로 변환하며, 그 이름을 컴포넌트 ID 로 등록해 활용한다.
+		    // 이로써 이 컴포넌트를 template 에서 <message-list> 로 사용할 수 있다.
+	        MessageList
+	    },
+	    data() {
+		    return {
+			    msgList : [
+				    {
+				        text : "a lot of money was there",
+					    inputDate : new Date(),
+				    },
+				    {
+				        text : "black sheep wall",
+					    inputDate : new Date(),
+				    }
+			    ],
+			    newMessage : '',
+		    }
+	    },
+	    // computed 프로퍼티
+	    computed : {
+	        // Vue.js 는 computed 프로퍼티에 종속된 값을 추적하고,
+			// 종속된 대상이 변경될 때 프로퍼티의 값을 업데이트한다.
+		    /**
+		     * 새 글 등록 비활성화 조건 : 메시지가 10개 이상이거나 새 글의 길이가 50 초과일때
+		     */
+		    addDisabled() {
+		        return this.msgList.length > 9 || this.newMessage.length > 50;
+		   }
+	    
+	    },
+	    methods : {
+		    /**
+		     * 새 메시지를 추가합니다.
+		     * @param event
+		     */
+		    addMessage( event ) {
+	            if( !this.newMessage ) {
+	                alert('내용을 입력해주세요.');
+	                return;
+	            }
+	            let now = new Date();
+	            this.msgList.push( {
+		           id : now.getTime(),
+			       text : this.newMessage,
+			       inputDate : now,
+		        });
+                this.newMessage = "";
+		    },
+		    /**
+		     * 메시지를 삭제합니다.
+		     * @param message
+		     */
+		    deleteMessage( message ) {
+			    console.log( "몇번째 메시지인가! : " , this.msgList.indexOf( message ) );
+			    this.msgList.splice( this.msgList.indexOf( message ), 1 );
+		    },
+		    
+	    }
+    });
+    </script>
+</body>
+</html>
+<style>
+	[v-cloak]{display:none;}
+	body > div {
+		width: 500px;
+		margin: 0 auto;
+	}
+	textarea {
+		width: 100%;
+	}
+	ul {
+		padding:0 15px;
+	}
+</style>
