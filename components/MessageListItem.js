@@ -3,8 +3,12 @@
  *
  *
  */
+
+import lifecycleLogger from '../mixins/lifecycle-logger.mixin.js';
+
 export default {
 	name : 'MessageListItem',
+	mixins : [lifecycleLogger],
 	template : `<li>
 					{{ item.text }} - {{ item.inputDate | datetime('MM/DD/YYYY') }}
 					<button @click="deleteClicked">X</button>

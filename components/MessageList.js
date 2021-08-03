@@ -11,8 +11,10 @@
  * Vue.js 는 에러를 던진다.
  */
 import MessageListItem from "./MessageListItem.js";
+import lifecycleLogger from '../mixins/lifecycle-logger.mixin.js';
 export default {
 	name : 'MessageList',
+	mixins : [lifecycleLogger],
 	template : `<ul>
 					<message-list-item v-for="item in items"
 										:item="item"
