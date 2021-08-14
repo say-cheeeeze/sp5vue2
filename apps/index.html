@@ -64,6 +64,7 @@
 			// 종속된 대상이 변경될 때 프로퍼티의 값을 업데이트한다.
 		    /**
 		     * 새 글 등록 비활성화 조건 : 메시지가 10개 이상이거나 새 글의 길이가 50 초과일때
+		     * Vue.js 가 submit 버튼을 어떻게 비활성화하는지 알아보려면 2장문서.txt 파일 확인하기
 		     */
 		    addDisabled() {
 		        return this.msgList.length > 9 || this.newMessage.length > 50;

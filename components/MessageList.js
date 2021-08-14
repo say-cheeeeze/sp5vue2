@@ -23,6 +23,8 @@ export default {
 					</message-list-item>
 				</ul>`,
 	props : {
+		// index.html 에서 넘어온 msgList
+		// Vue.js 가 어떻게 MessageList의 Props 를 처리하는지 알아보려면 2장문서.txt 참고
 		items : {
 			type : Array,
 			required : true,
