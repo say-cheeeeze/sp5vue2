@@ -1,0 +1,64 @@
+- 의존성 주입
+의존성을 연결하는 데는 스프링이 제공하는 두 어노테이션인 @Required 어노테이션과 @Autowired 어노테이션을 사용할 수 있다.
+@Required 어노테이션을 세터 메소드에, 
+@Autowired 어노테이션을 생성자와 메소드, 필드에 적용할 수 있다.
+
+정리하면 스프링에서 의존성을 주입하는 방법에는 세 가지가 있다.
+
+1. 생성자 기반의 주입
+2. 세터 기반 / 메소드 기반의 주입
+3. 필드 기반의 주입
+==============================================
+
+    1. 생성자 기반의 주입 
+
+    이 유형의 주입은 생성자를 통해 수행된다.
+    생성자에 Autowired 어노테이션을 적용할 수 있다.
+
+    @Autowired
+    public MessageService( MessageRepository repository ) {
+        this.repository = repository;
+    }
+
+    여기서 @Autowired 어노테이션 또한 생략할 수 있다.
+    이 경우에도 MessageRepository 빈을 삽입해야 하므로 MessageService 생성자를 검사하면서 해당 인자의 유형을 찾게 된다.
+
+    2. 세터 기반 / 메소드 기반의 주입
+
+    두번째 방법은 메소드 ( 일반적으로 setter 메소드 ) 를 선언하고 @Autowired 어노테이션 또는 @Required 어노테이션을 
+    적용하는 것이다. 예를 들어 MessageService 생성자를 제거하고 setRepository ( MessageRepository ) 메소드를
+    추가할 수 있다.
+
+    public class MessageService{
+        ...
+        @Required
+        public void setRepository( MessageRepository repository ) {
+            this.repository = repository;
+        }
+        ...
+    }
+
+    3. 필드 기반의 주입
+
+    @Autowired 어노테이션으로 필드에 직접 적용할 수 있다. 이렇게 했을 경우 세터 메소드를 선언할 필요가 없다.
+    
+    @Autowired
+    private MessageRepository repository;
+
+    그 외 어노테이션 : @Required 및 @Autowired 같은 내장된 어노테이션 외에도
+    스프링은 JSR-250 에 지정된 @javax.annotation.Resource 어노테이션과 
+    JSR-330 의 @javax.inject.Inject 어노테이션을 지원한다.
+    ** ( JSR : Java Specification Request ) : JSR 250 은 Java 플랫폼의 공통 어노테이션을 위한 것.
+                                              JSR 330 은 자바를 위한 의존성 주입에 관한 것.
+    
+    의존성 주입 모범 사례
+    반드시 필요한 의존성은 항상 생성자를 통해 주입해야 한다. 이를 통해 생성 이후에 인스턴스는 완전히 초기화되고 주입된 의존성은
+    읽기 전용(read-only) 이 된다. 어느 누구도 더 이상 의존성을 변경할 수 없다.
+
+    필수가 아닌 선택적인 의존성은 세터/메소드를 통해 주입할 수 있다.
+    필드 기반 주입은 사용하지 말아야 한다. 스프링은 자바 리플렉션 ( Reflection )으로 필드를 주입하고,
+    필드 주입방식을 사용하는 것은 위험한 것으로 간주된다. 사실 피해야 하는 이유는 다음과 같다.
+        - 의존성을 초기화하고 관리하는 방법과 이들의 의존관계와 같은 의존성의 정보를 숨긴다.
+        - 필드 주입은 매우 간단하다. 필드를 정의하고 @Autowired 또는 @Resource 어노테이션을 적용만 하면 된다.
+        개발자가 이 방법에 너무 중독되어 너무 많은 의존성을 추가하면 단일 책임 원칙 (SRP ) 을 위반할 수 있다.
+        이 내용은 6장 '코드 설계-안정성과 확장성을 고려해 설계하기' 에서 논의한다.

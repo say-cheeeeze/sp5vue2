@@ -1,5 +1,8 @@
 package app.messages;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MessageService {
 
     // MessageRepository 를 MessageService의 의존성으로 정의한다.
