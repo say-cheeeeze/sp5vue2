@@ -16,7 +16,7 @@
  * 이거를 index.html 에 적용하고,
  * MessageListItem.js 에서 날짜에 파이프(|)로 분리한 형태로 필터를 추가한 것을 볼 수 있다.
  */
-const formatter = Intl.DateTimeFormat('en-US', {
+const formatter = new Intl.DateTimeFormat('en-US', {
 	year : 'numeric',
 	month : 'long',
 	week : 'long',
