@@ -1,0 +1,3 @@
+DROP TABLE `messages`;
+SHOW TABLE;
+COMMIT;
