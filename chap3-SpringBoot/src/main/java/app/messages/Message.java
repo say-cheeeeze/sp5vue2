@@ -1,34 +1,63 @@
 package app.messages;
 
 import java.util.Date;
+import java.util.Objects;
 
-/**
- * 메시지 객체
- */
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+@Entity
+@Table(name = "messages")
 public class Message {
-    
-    private String text;
-    private int id;
-    private Date inputDate;
 
-    public Message( String text ) {
-        this.text = text;
-        this.inputDate = new Date();
-    }
-    
-    public Message( int id, String text, Date inputDate ) {
-        this.id = id;
-        this.text = text;
-        this.inputDate = inputDate;
-    }
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", nullable = false)
+  private Integer id;
 
-    public int getId() {
-        return id;
-    }
-    public String getText() {
-        return text;
-    }
-    public Date getInputDate() {
-        return inputDate;
-    }
+  @Column(name = "text", nullable = false, length = 128)
+  private String text;
+
+  @Column(name = "input_date", nullable = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date inputDate;
+
+  public Message() {
+  }
+
+  public Message(String text) {
+    this.text = text;
+    this.inputDate = new Date();
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public Date getInputDate() {
+    return inputDate;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Message message = (Message) o;
+    return Objects.equals(id, message.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
 }

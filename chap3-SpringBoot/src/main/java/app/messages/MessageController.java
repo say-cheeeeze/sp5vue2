@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/messages")
@@ -33,23 +32,23 @@ public class MessageController {
      * Model 객체를 핸들러 메소드의 파라미터로 등록할 필요가 없다.
      * 대신 템플릿 파일(html)의 이름을 전달해서 ModelAndView 인스턴스를 생성하고 addObject() 메소드를 통해 데이터를 추가한다.
      * 위에랑 작동하는 것은 똑같다.
-     */
-    @GetMapping("/mvTest")
-    public ModelAndView mvTest() {
-        String helloMessage = "Hello, Spring Boot!";
-        ModelAndView mv = new ModelAndView("welcome");
-        mv.addObject("message", helloMessage);
-        return mv;
-    }
+    //  */
+    // @GetMapping("/mvTest")
+    // public ModelAndView mvTest() {
+    //     String helloMessage = "Hello, Spring Boot!";
+    //     ModelAndView mv = new ModelAndView("welcome");
+    //     mv.addObject("message", helloMessage);
+    //     return mv;
+    // }
 
     @PostMapping("/save")
     @ResponseBody
-    public ResponseEntity<Message> saveMessage( @RequestBody MessageData data ) {
-        Message saved = messageService.save(data.getText());
-        if ( saved == null ) {
-            return ResponseEntity.status(500).build();
-        }      
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<Message> saveMessage(@RequestBody MessageData data) {
+      Message saved = messageService.save(data.getText());
+      if (saved == null) {
+        return ResponseEntity.status(500).build();
+      }
+      return ResponseEntity.ok(saved);
     }
     
 }

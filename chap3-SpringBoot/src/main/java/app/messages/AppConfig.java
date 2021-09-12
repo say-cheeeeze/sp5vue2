@@ -1,27 +1,41 @@
 package app.messages;
 
 import java.util.Arrays;
-
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-// 스프링이 컨테이너를 인스턴스화하는데 사용할 설정 메타 데이터
+import javax.sql.DataSource;
+
 @Configuration
 @ComponentScan("app.messages")
 public class AppConfig {
 
-    @Bean
-    public FilterRegistrationBean<AuditingFilter> auditingFilterRegistrationBean() {
+  private DataSource dataSource;
 
-        FilterRegistrationBean<AuditingFilter> registration = new FilterRegistrationBean<>();
-        AuditingFilter filter = new AuditingFilter();
+  public AppConfig(DataSource dataSource) {
+    this.dataSource = dataSource;
+  }
 
-        registration.setFilter( filter );
-        registration.setOrder(Integer.MAX_VALUE);
-        registration.setUrlPatterns(Arrays.asList("/messages/*"));
-        return registration;
-    }
+  @Bean
+  public FilterRegistrationBean<AuditingFilter> auditingFilterRegistrationBean() {
+    FilterRegistrationBean<AuditingFilter> registration = new FilterRegistrationBean<>();
+    AuditingFilter filter = new AuditingFilter();
+    registration.setFilter(filter);
+    registration.setOrder(Integer.MAX_VALUE);
+    registration.setUrlPatterns(Arrays.asList("/messages/*"));
+    return registration;
+  }
+
+  @Bean
+  public LocalSessionFactoryBean sessionFactory() {
+    LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+    sessionFactoryBean.setDataSource(dataSource);
+    sessionFactoryBean.setPackagesToScan("app.messages");
+    return sessionFactoryBean;
+  }
 
 }
