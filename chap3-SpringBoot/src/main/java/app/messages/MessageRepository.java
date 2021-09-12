@@ -12,7 +12,12 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 /**
  * 메시지 저장 작업
@@ -21,14 +26,51 @@ import org.springframework.stereotype.Component;
 public class MessageRepository {
 
     private DataSource dataSource;
+    
+    private final static Log log = LogFactory.getLog( MessageRepository.class );
+
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDateSource(DataSource dataSource) {
+        this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+    }
 
     public MessageRepository( DataSource dataSource ) {
         this.dataSource = dataSource;
     }
 
-    private final static Log log = LogFactory.getLog( MessageRepository.class );
+    /**
+     * 메시지를 저장합니다.
+     * 기존 saveMessage 와 달리 SpringJDBC 를 이용합니다.
+     * 
+     * @author cheeeeze
+     * @param message
+     * @return
+     */
+    public Message saveMessage2( Message message ) {
+
+        GeneratedKeyHolder holder = new GeneratedKeyHolder();
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("text", message.getText() );
+        params.addValue("inputDate", message.getInputDate());
+        String insertSQL = "INSERT INTO messages (`id`, `text`, `input_date` ) VALUES ( null , :text, :inputDate)";
+
+        try {
+            this.jdbcTemplate.update(insertSQL, params, holder );
+            
+        }
+        catch(DataAccessException e) {
+            log.error("Failed to save message", e );
+            return null;
+        }
+        return new Message( holder.getKey().intValue(), message.getText(), message.getInputDate() );
+    }
 
     public Message saveMessage( Message message ) {
+
+
+
 
         Connection conn = DataSourceUtils.getConnection(dataSource);
 
