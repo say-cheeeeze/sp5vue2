@@ -5,11 +5,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * 메시지 저장 작업
- * 
- * 9.12.    hibernate 도입 구조 변경
- */
 @Component
 public class MessageRepository {
 
