@@ -1,5 +1,6 @@
 package app.messages;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,12 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageService {
 		
-		private MessageRepository messageRepository;
+		private MessageRepository repository;
 		
+		@Autowired
 		public MessageService( MessageRepository repository ) {
-				this.messageRepository = repository;
+				this.repository = repository;
 		}
 		public void save( String text ) {
-				messageRepository.saveMessage( new Message( text ) );
+				repository.saveMessage( new Message( text ) );
 		}
 }
