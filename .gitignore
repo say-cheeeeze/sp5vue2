@@ -24,11 +24,15 @@ hs_err_pid*
 
 .idea/
 .gitignore
-
+*.iml
+*.sql
 *.settings
 *.classpath
 *.factorypath
 *.project
+
+# ignore all files in any directory names target
+target/
 
 
 
