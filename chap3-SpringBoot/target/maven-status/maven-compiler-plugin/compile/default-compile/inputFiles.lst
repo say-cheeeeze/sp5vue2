@@ -1,8 +1,5 @@
-/Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/MessageController.java
 /Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/AppConfig.java
 /Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/MessageRepository.java
-/Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/AuditingFilter.java
-/Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/MessageData.java
 /Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/MessageService.java
 /Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/Application.java
 /Users/cheeeeze/git/Spring5Vue2/chap2-3/chap3-SpringBoot/src/main/java/app/messages/Message.java

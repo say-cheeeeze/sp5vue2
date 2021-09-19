@@ -1,22 +1,16 @@
 package app.messages;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-@Component
+/**
+ * 메시지 저장 담당 DAO 역할
+ */
 public class MessageRepository {
+		
+		private final static Log log = LogFactory.getLog( MessageRepository.class );
 
-  private SessionFactory sessionFactory;
-
-  public MessageRepository(SessionFactory sessionFactory) {
-    this.sessionFactory = sessionFactory;
-  }
-
-  public Message saveMessage(Message message) {
-    Session session = sessionFactory.openSession();
-    session.save(message);
-    return message;
-  }
+		public void saveMessage( Message message ) {
+				log.info("Saved Message : " + message.getText() );
+		}
 }

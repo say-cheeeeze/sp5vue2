@@ -1,8 +1,5 @@
-app/messages/MessageData.class
-app/messages/AuditingFilter.class
 app/messages/MessageRepository.class
-app/messages/Message.class
-app/messages/Application.class
 app/messages/AppConfig.class
 app/messages/MessageService.class
-app/messages/MessageController.class
+app/messages/Message.class
+app/messages/Application.class
