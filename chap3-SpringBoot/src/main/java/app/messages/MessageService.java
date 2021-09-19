@@ -15,7 +15,8 @@ public class MessageService {
 		public MessageService( MessageRepository repository ) {
 				this.repository = repository;
 		}
-		public void save( String text ) {
-				repository.saveMessage( new Message( text ) );
+		
+		public Message save( String text ) {
+				return repository.saveMessage( new Message( text ) );
 		}
 }
