@@ -14,18 +14,22 @@ import java.sql.*;
 @Component
 public class MessageRepository {
 		
+		private final static Log log = LogFactory.getLog( MessageRepository.class );
+		
 		private DataSource dataSource;
+		
 		public MessageRepository(DataSource dataSource ) {
 				this.dataSource = dataSource;
 		}
-		private final static Log log = LogFactory.getLog( MessageRepository.class );
 
 		public Message saveMessage( Message message ) {
 				log.info("Saved Message : " + message.getText() );
 				
 				Connection con = DataSourceUtils.getConnection( dataSource );
 				try {
-						String insertSQL = "insert into messages (`id`, `text`, `input_date`) value ( null, ?, ? )";
+						log.info( message.getText() );
+						log.info( message.getInputDate() );
+						String insertSQL = "INSERT INTO MESSAGES (`ID`, `TEXT`, `INPUT_DATE`) value ( null, ?, ? )";
 						PreparedStatement ps = con.prepareStatement( insertSQL, Statement.RETURN_GENERATED_KEYS );
 						ps.setString(1, message.getText() );
 						ps.setTimestamp( 2, new Timestamp( message.getInputDate().getTime() ) );

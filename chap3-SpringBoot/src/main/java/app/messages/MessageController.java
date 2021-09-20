@@ -13,6 +13,12 @@ public class MessageController {
 		
 		private final static Log log = LogFactory.getLog( MessageController.class );
 		
+		private MessageService messageService;
+		
+		public MessageController( MessageService messageService) {
+				this.messageService = messageService;
+		}
+		
 		@GetMapping("/welcome")
 		public String welcome( Model model ) {
 				log.info( "Hello World!..............." );
@@ -20,7 +26,7 @@ public class MessageController {
 				return "welcome";
 		}
 		
-		@PostMapping("/messages/")
+		@PostMapping("")
 		@ResponseBody
 		public ResponseEntity<Message> saveMessage(@RequestBody MessageData data ) {
 				Message saved = messageService.save( data.getText() );

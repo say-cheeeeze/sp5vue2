@@ -13,6 +13,7 @@ public class Message {
 		
 		public Message( String text ) {
 				this.text = text;
+				this.inputDate = new Date();
 		}
 		public Message( int id, String text, Date inputDate ) {
 				this.id = id;
