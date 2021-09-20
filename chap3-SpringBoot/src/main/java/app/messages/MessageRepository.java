@@ -2,11 +2,14 @@ package app.messages;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.*;
 
 /**
  * 메시지 저장 담당 DAO 역할
@@ -16,6 +19,13 @@ public class MessageRepository {
 		
 		private final static Log log = LogFactory.getLog( MessageRepository.class );
 		
+		private NamedParameterJdbcTemplate jdbcTemplate;
+		
+		@Autowired
+		public void setDataSource( DataSource dataSource ) {
+				this.jdbcTemplate = new NamedParameterJdbcTemplate( dataSource );
+		}
+		
 		private DataSource dataSource;
 		
 		public MessageRepository(DataSource dataSource ) {
@@ -23,48 +33,26 @@ public class MessageRepository {
 		}
 
 		public Message saveMessage( Message message ) {
-				log.info("Saved Message : " + message.getText() );
 				
-				Connection con = DataSourceUtils.getConnection( dataSource );
+				log.info(" Trying to save Message : " + message.getText() );
+				
+				GeneratedKeyHolder holder = new GeneratedKeyHolder();
+				MapSqlParameterSource params = new MapSqlParameterSource();
+				params.addValue( "text", message.getText() );
+				params.addValue( "inputDate", message.getInputDate() );
+				
+				String insertSQL = "INSERT INTO MESSAGES (`ID`, `TEXT`, `INPUT_DATE`) value ( null, :text, :inputDate )";
+				
 				try {
 						log.info( message.getText() );
 						log.info( message.getInputDate() );
-						String insertSQL = "INSERT INTO MESSAGES (`ID`, `TEXT`, `INPUT_DATE`) value ( null, ?, ? )";
-						PreparedStatement ps = con.prepareStatement( insertSQL, Statement.RETURN_GENERATED_KEYS );
-						ps.setString(1, message.getText() );
-						ps.setTimestamp( 2, new Timestamp( message.getInputDate().getTime() ) );
-						int rowAffected = ps.executeUpdate();
-						
-						if ( rowAffected > 0 ) {
-								ResultSet result = ps.getGeneratedKeys();
-								if ( result.next() ) {
-										int id = result.getInt( 1 );
-										return new Message( id, message.getText(), message.getInputDate() );
-								}
-								else {
-										log.error("Failed to retrieve id. No row in result set");
-										return null;
-								}
-						}
-						else {
-								return null;
-						}
+						this.jdbcTemplate.update( insertSQL, params, holder );
 				}
-				catch( SQLException ex ) {
+				catch( DataAccessException ex ) {
 					ex.printStackTrace();
 					log.error("Failed to save message", ex );
-					try {
-							con.close();
-					}
-					catch( SQLException e ) {
-							e.printStackTrace();
-							log.error("Filaed to Close Connection", e );
-					}
+					return null;
 				}
-				finally {
-						DataSourceUtils.releaseConnection( con, dataSource );
-				}
-				return null;
-				
+				return new Message( holder.getKey().intValue(), message.getText(), message.getInputDate() );
 		}
 }
