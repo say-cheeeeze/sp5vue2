@@ -43,29 +43,8 @@ public class MessageRepository {
 				
 				log.debug( "4 => insde repository method..." );
 				// hibernate Session
-				Session session = sessionFactory.openSession();
+				Session session = sessionFactory.getCurrentSession();
 				session.save( message );
 				return message;
-				
-//				log.info(" Trying to save Message : " + message.getText() );
-//
-//				GeneratedKeyHolder holder = new GeneratedKeyHolder();
-//				MapSqlParameterSource params = new MapSqlParameterSource();
-//				params.addValue( "text", message.getText() );
-//				params.addValue( "inputDate", message.getInputDate() );
-//
-//				String insertSQL = "INSERT INTO MESSAGES (`ID`, `TEXT`, `INPUT_DATE`) value ( null, :text, :inputDate )";
-//
-//				try {
-//						log.info( message.getText() );
-//						log.info( message.getInputDate() );
-//						this.jdbcTemplate.update( insertSQL, params, holder );
-//				}
-//				catch( DataAccessException ex ) {
-//					ex.printStackTrace();
-//					log.error("Failed to save message", ex );
-//					return null;
-//				}
-//				return new Message( holder.getKey().intValue(), message.getText(), message.getInputDate() );
 		}
 }
