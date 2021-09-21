@@ -41,6 +41,7 @@ public class MessageRepository {
 
 		public Message saveMessage( Message message ) {
 				
+				log.debug( "4 => insde repository method..." );
 				// hibernate Session
 				Session session = sessionFactory.openSession();
 				session.save( message );

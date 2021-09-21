@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.NotAuthorizedException;
+
 @Controller
 @RequestMapping("/messages")
 public class MessageController {
@@ -30,6 +32,7 @@ public class MessageController {
 		@ResponseBody
 		public ResponseEntity<Message> saveMessage(@RequestBody MessageData data ) {
 				
+				System.out.println("1 => save Message API ........");
 				checkSecurity();
 				
 				Message saved = messageService.save( data.getText() );
@@ -40,7 +43,7 @@ public class MessageController {
 				
 		}
 		
-		private void checkSecurity() throws NotAuthorizedException{
+		private void checkSecurity() throws NotAuthorizedException {
 		
 		}
 
